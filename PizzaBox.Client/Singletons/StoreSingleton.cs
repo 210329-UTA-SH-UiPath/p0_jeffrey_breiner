@@ -1,0 +1,43 @@
+using System.Collections.Generic;
+using PizzaBox.Domain.Abstracts;
+using PizzaBox.Domain.Models;
+using PizzaBox.Storing.Repositories;
+
+namespace PizzaBox.Domain.Singletons
+{
+  /// <summary>
+  /// Contains aan _instance of itself that is created by through the Instance of itself.
+  /// Also contains a file path and reads from that file for its constructor.
+  /// </summary>
+  public class StoreSingleton
+  {
+    private static StoreSingleton _instance;
+    private static readonly FileRepository _fileRepository = new FileRepository();
+    private const string _path = @"store.xml";
+    public List<AStore> Stores { get; set; }
+    public static StoreSingleton Instance
+    {
+      get
+      {
+        if (_instance == null)
+        {
+          _instance = new StoreSingleton();
+        }
+
+        return _instance;
+      }
+    }
+
+    /// <summary>
+    /// Constructor. Sets a list of stores from a file.
+    /// </summary>
+    private StoreSingleton()
+    {
+      Stores = new List<AStore>()
+      {
+        new NewYorkStore(),
+        new ChicagoStore()
+      };
+    }
+  }
+}
